@@ -171,6 +171,8 @@
         guests
       };
 
+      console.log("Sending request to Google Script with payload: ", payload);
+
       try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbwacROlrDCd9626oPVulIBzUwvecbr7QLjCOdbRUCNjQri5oPlw7Dixw4W_4BcT_Fp0jQ/exec', {
           method: 'POST',
@@ -179,6 +181,8 @@
           },
           body: JSON.stringify(payload),
         });
+
+        console.log("Received response from Google Script:", response);
 
         const result = await response.json();
         if (result.status === 'success') {
@@ -189,6 +193,7 @@
           alert('Error: ' + result.message);
         }
       } catch (error) {
+        console.error('Request failed:', error.message);
         alert('Request failed: ' + error.message);
       }
     });

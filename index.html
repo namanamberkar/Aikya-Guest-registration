@@ -182,9 +182,12 @@
           body: JSON.stringify(payload),
         });
 
-        console.log("Received response from Google Script:", response);
-
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+        
         const result = await response.json();
+        console.log("Received result:", result);
+
         if (result.status === 'success') {
           alert('Form submitted successfully!');
           form.reset();

@@ -1,126 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Guest Registration</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .guest-form { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
-    label { display: block; margin-top: 8px; font-weight: bold; }
-    input, select { width: 100%; padding: 6px; margin-top: 4px; }
-    button { margin-top: 12px; padding: 8px 16px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h2 {
+      margin-top: 30px;
+      color: #333;
+    }
+    .guest {
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #fff;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .add-btn {
+      background: #007bff;
+      color: white;
+    }
+    .submit-btn {
+      background: #28a745;
+      color: white;
+    }
   </style>
 </head>
 <body>
+
   <h1>Guest Registration Form</h1>
-  <form id="mainForm">
-    <div id="guestContainer"></div>
-    <button type="button" onclick="addGuest()">➕ Add Guest</button>
-    <button type="submit">Submit All</button>
+
+  <form id="guestForm">
+    <div id="guests"></div>
+    <button type="button" class="add-btn" onclick="addGuest()">+ Add Guest</button>
+    <br>
+    <button type="submit" class="submit-btn">Submit</button>
   </form>
 
-  <div id="result"></div>
+  <pre id="response"></pre>
 
   <script>
+    const backendUrl = "YOUR_APPS_SCRIPT_WEBAPP_URL"; // replace with your deployed URL
     let guestCount = 0;
 
     function addGuest() {
       guestCount++;
-      const container = document.getElementById("guestContainer");
+      const guestDiv = document.createElement("div");
+      guestDiv.classList.add("guest");
+      guestDiv.setAttribute("data-guest", guestCount);
 
-      const div = document.createElement("div");
-      div.className = "guest-form";
-      div.innerHTML = `
-        <h3>Guest ${guestCount}</h3>
-        <label>Name: <input type="text" name="name" required></label>
-        <label>DOB: <input type="date" name="dob" required></label>
-        <label>Gender: 
-          <select name="gender" required>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </label>
-        <label>WhatsApp Contact Number: <input type="tel" name="whatsapp" required></label>
-        <label>Subscribe for Alerts:
-          <select name="subscribe" required>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-        </label>
-        <label>Upload Identity Card: <input type="file" name="idCard" accept="image/*,application/pdf" required></label>
-        <p><small>Max 2MB. Passport, Driving License, Voter ID, Aadhaar.</small></p>
-        <label>Check In Date: <input type="date" name="checkInDate" required></label>
-        <label>Check In Time: <input type="time" name="checkInTime" required></label>
-        <label>Check Out Date: <input type="date" name="checkOutDate" required></label>
-        <label>Check Out Time: <input type="time" name="checkOutTime" required></label>
+      guestDiv.innerHTML = `
+        <h2>Guest ${guestCount}</h2>
+        <label>Name:</label>
+        <input type="text" name="name">
+
+        <label>Date of Birth:</label>
+        <input type="date" name="dob">
+
+        <label>Gender:</label>
+        <select name="gender">
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label>WhatsApp Contact Number:</label>
+        <input type="tel" name="whatsapp">
+
+        <label>Subscribe for Alerts:</label>
+        <select name="subscribe">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+
+        <label>Upload Identity Card (Max 2MB):</label>
+        <input type="file" name="idFile" accept="image/*,application/pdf">
+
+        <label>Check In Date:</label>
+        <input type="date" name="checkInDate">
+
+        <label>Check In Time:</label>
+        <input type="time" name="checkInTime">
+
+        <label>Check Out Date:</label>
+        <input type="date" name="checkOutDate">
+
+        <label>Check Out Time:</label>
+        <input type="time" name="checkOutTime">
       `;
-      container.appendChild(div);
+
+      document.getElementById("guests").appendChild(guestDiv);
     }
 
-    // Add first guest by default
-    addGuest();
-
-    document.getElementById("mainForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const results = [];
-
-      const guests = document.querySelectorAll(".guest-form");
-      for (const guest of guests) {
-        const name = guest.querySelector("[name='name']").value;
-        const dob = guest.querySelector("[name='dob']").value;
-        const gender = guest.querySelector("[name='gender']").value;
-        const whatsapp = guest.querySelector("[name='whatsapp']").value;
-        const subscribe = guest.querySelector("[name='subscribe']").value;
-        const idCardFile = guest.querySelector("[name='idCard']").files[0];
-        const checkInDate = guest.querySelector("[name='checkInDate']").value;
-        const checkInTime = guest.querySelector("[name='checkInTime']").value;
-        const checkOutDate = guest.querySelector("[name='checkOutDate']").value;
-        const checkOutTime = guest.querySelector("[name='checkOutTime']").value;
-
-        if (!idCardFile) {
-          results.push({ name, success: false, error: "No file selected" });
-          continue;
-        }
-
-        const base64 = await toBase64(idCardFile);
-
-        const payload = {
-          name,
-          date: checkInDate, // Apps Script expects a `date` field → use check-in date
-          fileName: idCardFile.name,
-          mimeType: idCardFile.type,
-          fileBase64: base64.split(",")[1], // remove prefix
-          // extra guest fields (optional - won't break script)
-          dob, gender, whatsapp, subscribe,
-          checkInDate, checkInTime, checkOutDate, checkOutTime,
-        };
-
-        try {
-          const res = await fetch("http://localhost:3000/upload", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-          const data = await res.json();
-          results.push({ name, ...data });
-        } catch (err) {
-          results.push({ name, success: false, error: err.message });
-        }
-      }
-
-      document.getElementById("result").innerText = JSON.stringify(results, null, 2);
-    });
-
-    function toBase64(file) {
+    async function fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
         reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = error => reject(error);
       });
     }
+
+    document.getElementById("guestForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const guestDivs = document.querySelectorAll(".guest");
+      const guests = [];
+
+      for (const div of guestDivs) {
+        const guest = {};
+        guest.name = div.querySelector("[name='name']").value;
+        guest.dob = div.querySelector("[name='dob']").value;
+        guest.gender = div.querySelector("[name='gender']").value;
+        guest.whatsapp = div.querySelector("[name='whatsapp']").value;
+        guest.subscribe = div.querySelector("[name='subscribe']").value;
+        guest.checkInDate = div.querySelector("[name='checkInDate']").value;
+        guest.checkInTime = div.querySelector("[name='checkInTime']").value;
+        guest.checkOutDate = div.querySelector("[name='checkOutDate']").value;
+        guest.checkOutTime = div.querySelector("[name='checkOutTime']").value;
+
+        const fileInput = div.querySelector("[name='idFile']");
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          if (file.size > 2 * 1024 * 1024) {
+            alert("File too large (max 2MB): " + file.name);
+            return;
+          }
+          guest.fileName = file.name;
+          guest.mimeType = file.type;
+          guest.fileBase64 = await fileToBase64(file);
+        }
+
+        guests.push(guest);
+      }
+
+      const payload = {
+        date: guests[0]?.checkInDate || new Date().toISOString().split("T")[0],
+        guests
+      };
+
+      const res = await fetch(backendUrl, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await res.json();
+      document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+    });
+
+    // Load first guest by default
+    addGuest();
   </script>
 </body>
 </html>

@@ -1,81 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Image Upload</title>
+  <meta charset="UTF-8">
+  <title>Guest Upload</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    label { display: block; margin-top: 10px; }
-    #status { margin-top: 20px; padding: 10px; border-radius: 5px; }
-    .success { background: #e6ffe6; color: #006600; }
-    .error { background: #ffe6e6; color: #990000; }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    input, button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    pre {
+      margin-top: 15px;
+      background: #eee;
+      padding: 10px;
+      border-radius: 6px;
+      max-height: 150px;
+      overflow: auto;
+    }
   </style>
 </head>
 <body>
-  <h2>Upload Image</h2>
-
-  <form id="uploadForm">
-    <label>
-      Name: <input type="text" id="name" required />
-    </label>
-    <label>
-      Date: <input type="date" id="date" required />
-    </label>
-    <label>
-      Image: <input type="file" id="image" accept="image/*" required />
-    </label>
-    <button type="submit">Upload</button>
-  </form>
-
-  <div id="status"></div>
+  <div class="card">
+    <h2>Guest Upload</h2>
+    <input type="text" id="name" placeholder="Enter your name" required />
+    <input type="date" id="date" required />
+    <input type="file" id="fileInput" accept="image/*" required />
+    <button onclick="uploadFile()">Upload</button>
+    <pre id="result"></pre>
+  </div>
 
   <script>
-    const form = document.getElementById("uploadForm");
-    const statusDiv = document.getElementById("status");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      statusDiv.textContent = "Uploading... please wait.";
-      statusDiv.className = "";
-
-      const name = document.getElementById("name").value;
+    async function uploadFile() {
+      const name = document.getElementById("name").value.trim();
       const date = document.getElementById("date").value;
-      const file = document.getElementById("image").files[0];
+      const fileInput = document.getElementById("fileInput");
+      const result = document.getElementById("result");
 
-      if (!file) {
-        statusDiv.textContent = "⚠️ Please select an image.";
-        statusDiv.className = "error";
+      if (!name || !date || !fileInput.files[0]) {
+        result.textContent = "⚠️ Please fill all fields and select a file.";
         return;
       }
 
-      // Convert file to Base64
+      const file = fileInput.files[0];
       const reader = new FileReader();
-      reader.onload = async function(event) {
+      reader.onload = async function () {
+        const base64 = reader.result.split(",")[1]; // remove "data:image/png;base64,"
+        
         try {
           const response = await fetch("http://localhost:3000/upload", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              name,
-              date,
-              image: event.target.result
-            })
+              name: name,
+              date: date,
+              fileName: file.name,
+              fileBase64: base64
+            }),
           });
 
-          const result = await response.json();
-          if (result.success) {
-            statusDiv.textContent = "✅ Upload successful! File saved in Drive.";
-            statusDiv.className = "success";
-          } else {
-            statusDiv.textContent = "❌ Upload failed: " + JSON.stringify(result);
-            statusDiv.className = "error";
-          }
+          const data = await response.json();
+          result.textContent = "✅ Upload successful:\n" + JSON.stringify(data, null, 2);
         } catch (err) {
-          statusDiv.textContent = "❌ Error: " + err.message;
-          statusDiv.className = "error";
+          result.textContent = "❌ Upload failed:\n" + err;
         }
       };
       reader.readAsDataURL(file);
-    });
+    }
   </script>
 </body>
 </html>

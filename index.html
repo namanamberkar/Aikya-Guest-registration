@@ -1,629 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Registration</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Customizing Tailwind CSS with your color palette
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#FEBA17',
-                        secondary: '#74512D',
-                        success: '#74512D',
-                        danger: '#ef4444',
-                        warning: '#FEBA17',
-                        info: '#74512D',
-                        cream: '#F8F4E1',
-                        darkBrown: '#4E1F00'
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#1e40af',
+            success: '#10b981',
+            danger: '#ef4444',
+            warning: '#f59e0b',
+            info: '#06b6d4'
+          }
         }
-    </script>
-    <style>
-        /* Custom font import and styling */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Custom background gradient */
-        .gradient-bg {
-            background: linear-gradient(135deg, #74512D 0%, #4E1F00 100%);
-        }
-
-        /* Glassmorphism-style effect for cards and elements */
-        .glass-effect {
-            backdrop-filter: blur(16px) saturate(180%);
-            background-color: rgba(248, 244, 225, 0.95);
-            border: 1px solid rgba(254, 186, 23, 0.3);
-        }
-
-        /* Input field focus and hover effects */
-        .input-focus:focus {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 25px rgba(254, 186, 23, 0.15);
-        }
-
-        /* Guest card transition for a smooth hover effect */
-        .guest-card {
-            transition: all 0.3s ease;
-        }
-
-        .guest-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Button hover effect */
-        .btn-hover:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Fade-in animation for new elements */
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Fade-out animation for removed elements */
-        .animate-fade-out {
-            animation: fadeOut 0.3s ease-out;
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
-        }
-
-        /* File upload area styling */
-        .file-upload-area {
-            border: 2px dashed #d1d5db;
-            transition: all 0.3s ease;
-        }
-
-        .file-upload-area:hover {
-            border-color: #FEBA17;
-            background-color: #F8F4E1;
-        }
-
-        /* Response container styling */
-        .response-container {
-            background: linear-gradient(145deg, #F8F4E1, #FEBA17);
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(209, 213, 219, 0.3);
+    }
+    
+    .input-focus:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    
+    .guest-card {
+      transition: all 0.3s ease;
+    }
+    
+    .guest-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-hover:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .file-upload-area {
+      border: 2px dashed #d1d5db;
+      transition: all 0.3s ease;
+    }
+    
+    .file-upload-area:hover {
+      border-color: #3b82f6;
+      background-color: #f8fafc;
+    }
+    
+    .response-container {
+      background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+    }
+  </style>
 </head>
 <body class="min-h-screen gradient-bg">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- Header Section -->
-        <div class="text-center mb-12">
-            <!-- Logo container with fallback icon -->
-            <div class="mb-8">
-                <div id="logoContainer" class="inline-flex items-center justify-center w-32 h-32 bg-white rounded-2xl shadow-2xl mb-6 overflow-hidden">
-                    <!-- Placeholder logo image. This will display a fallback icon if the image URL is broken. -->
-                    <img id="companyLogo" src="https://placehold.co/128x128/74512D/F8F4E1?text=LOGO" alt="Company Logo" class="w-full h-full object-contain p-4" onerror="this.style.display='none'; document.getElementById('defaultIcon').classList.remove('hidden');">
-                    <!-- Default icon when logo file is not found -->
-                    <div id="defaultIcon" class="flex flex-col items-center justify-center text-primary hidden">
-                        <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                        <span class="text-xs font-medium">Logo Not Found</span>
-                    </div>
-                </div>
-            </div>
-            
-            <h1 class="text-4xl font-bold text-cream mb-4">Guest Registration Form</h1>
-            <p class="text-cream text-lg opacity-90">Please fill in the details for all guests</p>
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <!-- Logo Section -->
+      <div class="mb-8">
+        <div id="logoContainer" class="inline-flex items-center justify-center w-32 h-32 bg-white rounded-2xl shadow-2xl mb-6 overflow-hidden">
+          <!-- Your company logo - place your logo file in the same folder and update the filename -->
+          <img id="companyLogo" src="logo.png" alt="Company Logo" class="w-full h-full object-contain p-4" onerror="this.style.display='none'; document.getElementById('defaultIcon').classList.remove('hidden');">
+          <!-- Default icon when logo file is not found -->
+          <div id="defaultIcon" class="flex flex-col items-center justify-center text-primary hidden">
+            <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            <span class="text-xs font-medium">Logo Not Found</span>
+          </div>
         </div>
-
-        <!-- Main Form Content -->
-        <form id="guestForm" class="space-y-8">
-            <div id="guests" class="space-y-6"></div>
-            
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button type="button" class="add-btn bg-primary hover:bg-secondary text-darkBrown font-semibold py-4 px-8 rounded-xl shadow-lg btn-hover transition-all duration-300 flex items-center gap-3" onclick="addGuest()">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Add Guest
-                </button>
-                
-                <button type="submit" class="submit-btn bg-success hover:bg-darkBrown text-cream font-semibold py-4 px-8 rounded-xl shadow-lg btn-hover transition-all duration-300 flex items-center gap-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Submit Registration
-                </button>
-            </div>
-        </form>
-
-        <!-- Response Section -->
-        <div id="responseSection" class="mt-12 hidden">
-            <div class="glass-effect rounded-2xl p-6 shadow-xl">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Registration Data
-                </h3>
-                <div class="response-container rounded-xl p-4">
-                    <pre id="response" class="text-sm text-gray-700 whitespace-pre-wrap font-mono"></pre>
-                </div>
-            </div>
-        </div>
+      </div>
+      
+      <h1 class="text-4xl font-bold text-white mb-4">Guest Registration Form</h1>
+      <p class="text-blue-100 text-lg">Please fill in the details for all guests</p>
     </div>
 
-    <!-- File Size Warning Modal -->
-    <div id="fileSizeModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <h3 class="text-lg font-bold text-danger">File Too Large</h3>
-            <p class="mt-2 text-sm text-gray-600" id="fileSizeMessage"></p>
-            <div class="mt-4 flex justify-end">
-                <button id="closeModal" class="px-4 py-2 bg-danger text-white text-base font-medium rounded-md shadow-sm hover:bg-red-700">
-                    Close
-                </button>
-            </div>
+    <!-- Main Form -->
+    <form id="guestForm" class="space-y-8">
+      <div id="guests" class="space-y-6"></div>
+      
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <button type="button" class="add-btn bg-primary hover:bg-secondary text-white font-semibold py-4 px-8 rounded-xl shadow-lg btn-hover transition-all duration-300 flex items-center gap-3" onclick="addGuest()">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Add Guest
+        </button>
+        
+        <button type="submit" class="submit-btn bg-success hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-xl shadow-lg btn-hover transition-all duration-300 flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Submit Registration
+        </button>
+      </div>
+    </form>
+
+    <!-- Response Section -->
+    <div id="responseSection" class="mt-12 hidden">
+      <div class="glass-effect rounded-2xl p-6 shadow-xl">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Registration Response
+        </h3>
+        <div class="response-container rounded-xl p-4">
+          <pre id="response" class="text-sm text-gray-700 whitespace-pre-wrap font-mono"></pre>
         </div>
+      </div>
     </div>
-    
-<script>
-    // State variable to keep track of the number of guest forms
+  </div>
+
+  <script>
+    const backendUrl = "http://localhost:3000/upload"; // replace with your deployed URL
     let guestCount = 0;
 
-    /**
-     * Creates and appends a new guest registration form to the DOM.
-     * Includes a check for a remove button for all guests after the first.
-     */
     function addGuest() {
-        guestCount++;
-        const guestsContainer = document.getElementById("guests");
-        const guestDiv = document.createElement("div");
-        
-        // Add classes for styling and animations
-        guestDiv.classList.add("guest", "guest-card", "glass-effect", "rounded-2xl", "p-8", "shadow-xl", "animate-fade-in");
-        guestDiv.setAttribute("data-guest", guestCount);
+      guestCount++;
+      const guestDiv = document.createElement("div");
+      guestDiv.classList.add("guest", "guest-card", "glass-effect", "rounded-2xl", "p-8", "shadow-xl", "animate-fade-in");
+      guestDiv.setAttribute("data-guest", guestCount);
 
-        // Populate the inner HTML for the guest form fields
-        guestDiv.innerHTML = `
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-darkBrown flex items-center gap-3">
-                    <div class="w-10 h-10 bg-primary text-darkBrown rounded-full flex items-center justify-center font-bold">
-                        ${guestCount}
-                    </div>
-                    Guest ${guestCount}
-                </h2>
-                ${guestCount > 1 ? `
-                    <button type="button" onclick="removeGuest(this)" class="text-danger hover:bg-red-50 p-2 rounded-lg transition-colors duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
-                    </button>
-                ` : ''}
+      guestDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+              ${guestCount}
             </div>
+            Guest ${guestCount}
+          </h2>
+          ${guestCount > 1 ? `
+            <button type="button" onclick="removeGuest(this)" class="text-danger hover:bg-red-50 p-2 rounded-lg transition-colors duration-200">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          ` : ''}
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-darkBrown">Full Name</label>
-                    <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" placeholder="Enter full name" required>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">Full Name</label>
+            <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" placeholder="Enter full name" required>
+          </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-darkBrown">Date of Birth</label>
-                    <input type="date" name="dob" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
-                </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">Date of Birth</label>
+            <input type="date" name="dob" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
+          </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-darkBrown">Gender</label>
-                    <select name="gender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">Gender</label>
+            <select name="gender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-darkBrown">WhatsApp Contact</label>
-                    <input type="tel" name="whatsapp" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" placeholder="+1 (555) 123-4567" required>
-                </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">WhatsApp Contact</label>
+            <input type="tel" name="whatsapp" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" placeholder="+1 (555) 123-4567" required>
+          </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-darkBrown">Subscribe for Alerts</label>
-                    <select name="subscribe" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300">
-                        <option value="Yes">Yes, keep me updated</option>
-                        <option value="No">No, thank you</option>
-                    </select>
-                </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">Subscribe for Alerts</label>
+            <select name="subscribe" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300">
+              <option value="Yes">Yes, keep me updated</option>
+              <option value="No">No, thank you</option>
+            </select>
+          </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-darkBrown">Identity Card Upload</label>
-                    <div class="file-upload-area rounded-xl p-4">
-                        <input type="file" name="idFile" accept="image/*,application/pdf" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-darkBrown hover:file:bg-secondary transition-all duration-300">
-                        <p class="text-xs text-gray-500 mt-2">Max file size: 2MB (Images or PDF)</p>
-                    </div>
-                </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">Identity Card Upload</label>
+            <div class="file-upload-area rounded-xl p-4">
+              <input type="file" name="idFile" accept="image/*,application/pdf" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-secondary transition-all duration-300">
+              <p class="text-xs text-gray-500 mt-2">Max file size: 2MB (Images or PDF)</p>
             </div>
+          </div>
+        </div>
 
-            <div class="mt-8">
-                <h3 class="text-lg font-semibold text-darkBrown mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 8a2 2 0 100-4 2 2 0 000 4zm0 0v3m-3-3h6m-6 0H3m3 0h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Check-in & Check-out Details
-                </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-darkBrown">Check-in Date</label>
-                        ${guestCount > 1 ? `
-                            <div class="mb-2">
-                                <button type="button" onclick="copyPreviousGuestDates(this)" class="text-xs bg-blue-50 hover:bg-blue-100 text-primary px-3 py-1 rounded-full transition-colors duration-200 flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                    </svg>
-                                    Same as Previous Guest
-                                </button>
-                            </div>
-                        ` : ''}
-                        <input type="date" name="checkInDate" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required onchange="updateCheckOutMinDate(this)">
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-darkBrown">Check-in Time</label>
-                        <div class="digital-time-picker bg-white border border-gray-300 rounded-xl p-4 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all duration-300">
-                            <div class="flex items-center justify-center space-x-3">
-                                <!-- Hour Selector -->
-                                <div class="flex flex-col items-center">
-                                    <label class="text-xs text-secondary mb-1">Hour</label>
-                                    <select name="checkInHour" class="w-16 px-2 py-2 text-center text-lg font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        ${Array.from({length: 12}, (_, i) => {
-                                            const hour = i === 0 ? 12 : i;
-                                            return `<option value="${hour}">${hour}</option>`;
-                                        }).join('')}
-                                    </select>
-                                </div>
-                                
-                                <div class="text-2xl font-bold text-gray-400">:</div>
-                                
-                                <!-- Minute Selector -->
-                                <div class="flex flex-col items-center">
-                                    <label class="text-xs text-gray-500 mb-1">Minute</label>
-                                    <select name="checkInMinute" class="w-16 px-2 py-2 text-center text-lg font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        ${Array.from({length: 60}, (_, i) => {
-                                            const minute = i.toString().padStart(2, '0');
-                                            return `<option value="${minute}">${minute}</option>`;
-                                        }).join('')}
-                                    </select>
-                                </div>
-                                
-                                <!-- AM/PM Selector -->
-                                <div class="flex flex-col items-center">
-                                    <label class="text-xs text-gray-500 mb-1">Period</label>
-                                    <select name="checkInPeriod" class="w-16 px-2 py-2 text-center text-lg font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="AM">AM</option>
-                                        <option value="PM">PM</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-darkBrown">Check-out Date</label>
-                        <input type="date" name="checkOutDate" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-darkBrown">Check-out Time</label>
-                        <div class="digital-time-picker bg-white border border-gray-300 rounded-xl p-4 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all duration-300">
-                            <div class="flex items-center justify-center space-x-3">
-                                <!-- Hour Selector -->
-                                <div class="flex flex-col items-center">
-                                    <label class="text-xs text-secondary mb-1">Hour</label>
-                                    <select name="checkOutHour" class="w-16 px-2 py-2 text-center text-lg font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        ${Array.from({length: 12}, (_, i) => {
-                                            const hour = i === 0 ? 12 : i;
-                                            return `<option value="${hour}">${hour}</option>`;
-                                        }).join('')}
-                                    </select>
-                                </div>
-                                
-                                <div class="text-2xl font-bold text-gray-400">:</div>
-                                
-                                <!-- Minute Selector -->
-                                <div class="flex flex-col items-center">
-                                    <label class="text-xs text-gray-500 mb-1">Minute</label>
-                                    <select name="checkOutMinute" class="w-16 px-2 py-2 text-center text-lg font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        ${Array.from({length: 60}, (_, i) => {
-                                            const minute = i.toString().padStart(2, '0');
-                                            return `<option value="${minute}">${minute}</option>`;
-                                        }).join('')}
-                                    </select>
-                                </div>
-                                
-                                <!-- AM/PM Selector -->
-                                <div class="flex flex-col items-center">
-                                    <label class="text-xs text-gray-500 mb-1">Period</label>
-                                    <select name="checkOutPeriod" class="w-16 px-2 py-2 text-center text-lg font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        <option value="AM">AM</option>
-                                        <option value="PM">PM</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        guestsContainer.appendChild(guestDiv);
-        
-        // Ensure new inputs have correct minimum dates and times set
-        setMinimumDates();
-        initializeDigitalTimePickers();
-    }
-
-    /**
-     * Removes a guest form from the DOM with a fade-out animation.
-     * @param {HTMLElement} button - The button that was clicked to remove the guest.
-     */
-    function removeGuest(button) {
-        const guestDiv = button.closest('.guest');
-        guestDiv.classList.remove('animate-fade-in');
-        guestDiv.classList.add('animate-fade-out');
-        setTimeout(() => {
-            guestDiv.remove();
-            updateGuestNumbers();
-        }, 300);
-    }
-
-    /**
-     * Re-labels the guest forms after a guest has been removed to maintain order.
-     */
-    function updateGuestNumbers() {
-        const guestDivs = document.querySelectorAll('.guest');
-        guestDivs.forEach((div, index) => {
-            const guestNumber = index + 1;
-            const header = div.querySelector('h2');
-            const numberBadge = div.querySelector('.w-10.h-10');
-            if (header && numberBadge) {
-                header.innerHTML = `<div class="w-10 h-10 bg-primary text-darkBrown rounded-full flex items-center justify-center font-bold">${guestNumber}</div> Guest ${guestNumber}`;
-            }
-            div.setAttribute('data-guest', guestNumber);
-        });
-        guestCount = guestDivs.length;
-    }
-
-    /**
-     * Handles form submission, collects data, and displays it on the page.
-     * Replaces the old, non-functional backend `fetch` call.
-     */
-    document.getElementById("guestForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        // Show loading state
-        const submitBtn = document.querySelector('.submit-btn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = `
-            <svg class="animate-spin w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 8a2 2 0 100-4 2 2 0 000 4zm0 0v3m-3-3h6m-6 0H3m3 0h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            Processing...
-        `;
-        submitBtn.disabled = true;
+            Check-in & Check-out Details
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold text-gray-700">Check-in Date</label>
+              <input type="date" name="checkInDate" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
+            </div>
 
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold text-gray-700">Check-in Time</label>
+              <input type="time" name="checkInTime" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold text-gray-700">Check-out Date</label>
+              <input type="date" name="checkOutDate" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold text-gray-700">Check-out Time</label>
+              <input type="time" name="checkOutTime" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent input-focus transition-all duration-300" required>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("guests").appendChild(guestDiv);
+    }
+
+    function removeGuest(button) {
+      const guestDiv = button.closest('.guest');
+      guestDiv.style.animation = 'fadeOut 0.3s ease-out';
+      setTimeout(() => {
+        guestDiv.remove();
+        updateGuestNumbers();
+      }, 300);
+    }
+
+    function updateGuestNumbers() {
+      const guestDivs = document.querySelectorAll('.guest');
+      guestDivs.forEach((div, index) => {
+        const guestNumber = index + 1;
+        const header = div.querySelector('h2');
+        const numberBadge = div.querySelector('.w-10.h-10');
+        if (header && numberBadge) {
+          header.innerHTML = header.innerHTML.replace(/Guest \d+/, `Guest ${guestNumber}`);
+          numberBadge.textContent = guestNumber;
+        }
+        div.setAttribute('data-guest', guestNumber);
+      });
+      guestCount = guestDivs.length;
+    }
+
+    async function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    document.getElementById("guestForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Show loading state
+      const submitBtn = document.querySelector('.submit-btn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Processing...
+      `;
+      submitBtn.disabled = true;
+
+      try {
         const guestDivs = document.querySelectorAll(".guest");
         const guests = [];
-        let hasError = false;
 
         for (const div of guestDivs) {
-            const guest = {};
-            const fileInput = div.querySelector("[name='idFile']");
-            
-            // Check for file size before processing the rest of the form
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                if (file.size > 2 * 1024 * 1024) {
-                    showFileSizeModal("File too large (max 2MB): " + file.name);
-                    hasError = true;
-                    break;
-                }
+          const guest = {};
+          guest.name = div.querySelector("[name='name']").value;
+          guest.dob = div.querySelector("[name='dob']").value;
+          guest.gender = div.querySelector("[name='gender']").value;
+          guest.whatsapp = div.querySelector("[name='whatsapp']").value;
+          guest.subscribe = div.querySelector("[name='subscribe']").value;
+          guest.checkInDate = div.querySelector("[name='checkInDate']").value;
+          guest.checkInTime = div.querySelector("[name='checkInTime']").value;
+          guest.checkOutDate = div.querySelector("[name='checkOutDate']").value;
+          guest.checkOutTime = div.querySelector("[name='checkOutTime']").value;
+
+          const fileInput = div.querySelector("[name='idFile']");
+          if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            if (file.size > 2 * 1024 * 1024) {
+              alert("File too large (max 2MB): " + file.name);
+              return;
             }
+            guest.fileName = file.name;
+            guest.mimeType = file.type;
+            guest.fileBase64 = await fileToBase64(file);
+          }
 
-            guest.name = div.querySelector("[name='name']").value;
-            guest.dob = div.querySelector("[name='dob']").value;
-            guest.gender = div.querySelector("[name='gender']").value;
-            guest.whatsapp = div.querySelector("[name='whatsapp']").value;
-            guest.subscribe = div.querySelector("[name='subscribe']").value;
-            guest.checkInDate = div.querySelector("[name='checkInDate']").value;
-            guest.checkInTime = `${div.querySelector("[name='checkInHour']").value}:${div.querySelector("[name='checkInMinute']").value} ${div.querySelector("[name='checkInPeriod']").value}`;
-            guest.checkOutDate = div.querySelector("[name='checkOutDate']").value;
-            guest.checkOutTime = `${div.querySelector("[name='checkOutHour']").value}:${div.querySelector("[name='checkOutMinute']").value} ${div.querySelector("[name='checkOutPeriod']").value}`;
-
-            guests.push(guest);
-        }
-        
-        // If there was a file size error, stop processing
-        if (hasError) {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-            return;
+          guests.push(guest);
         }
 
-        // Display the collected data to the user
         const payload = {
-            date: guests[0]?.checkInDate || new Date().toISOString().split("T")[0],
-            guests
+          date: guests[0]?.checkInDate || new Date().toISOString().split("T")[0],
+          guests
         };
 
-        document.getElementById("response").textContent = JSON.stringify(payload, null, 2);
+        const res = await fetch(backendUrl, {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await res.json();
+        document.getElementById("response").textContent = JSON.stringify(data, null, 2);
         document.getElementById("responseSection").classList.remove("hidden");
         
         // Scroll to response
         document.getElementById("responseSection").scrollIntoView({ behavior: 'smooth' });
         
-        // Restore button state
+      } catch (error) {
+        document.getElementById("response").textContent = "Error: " + error.message;
+        document.getElementById("responseSection").classList.remove("hidden");
+      } finally {
+        // Restore button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
+      }
     });
 
-    /**
-     * Displays a custom modal to show file size warnings.
-     * @param {string} message - The message to display in the modal.
-     */
-    function showFileSizeModal(message) {
-        document.getElementById("fileSizeMessage").textContent = message;
-        document.getElementById("fileSizeModal").classList.remove("hidden");
-    }
-
-    // Close modal when the button is clicked
-    document.getElementById("closeModal").addEventListener("click", () => {
-        document.getElementById("fileSizeModal").classList.add("hidden");
-    });
-    
-    // Initial call to add the first guest form on page load
+    // Load first guest by default
     addGuest();
 
-    /**
-     * Sets the minimum date for check-in and check-out to today.
-     * This prevents users from selecting past dates.
-     */
-    function setMinimumDates() {
-        const today = new Date().toISOString().split('T')[0];
-        const checkInDates = document.querySelectorAll('[name="checkInDate"]');
-        const checkOutDates = document.querySelectorAll('[name="checkOutDate"]');
-        
-        checkInDates.forEach(input => {
-            input.min = today;
-            if (!input.value) {
-                input.value = today;
-            }
-        });
-        
-        checkOutDates.forEach(input => {
-            input.min = today;
-            if (!input.value) {
-                input.value = today;
-            }
-        });
-        
-        // Also update the check-out min date for all guests
-        document.querySelectorAll('[name="checkInDate"]').forEach(updateCheckOutMinDate);
-    }
 
-    /**
-     * Updates the check-out minimum date based on the selected check-in date.
-     * @param {HTMLElement} checkInInput - The check-in date input element.
-     */
-    function updateCheckOutMinDate(checkInInput) {
-        const guestDiv = checkInInput.closest('.guest');
-        if (!guestDiv) return;
-        
-        const checkOutInput = guestDiv.querySelector('[name="checkOutDate"]');
-        const checkInDate = checkInInput.value;
-        
-        if (checkInDate) {
-            checkOutInput.min = checkInDate;
-            if (checkOutInput.value && checkOutInput.value < checkInDate) {
-                checkOutInput.value = checkInDate;
-            }
-        }
-    }
 
-    /**
-     * Initializes the digital time pickers with the current time upon creation.
-     */
-    function initializeDigitalTimePickers() {
-        const timePickers = document.querySelectorAll('.digital-time-picker');
-        
-        timePickers.forEach(picker => {
-            const now = new Date();
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
-            const isAM = currentHour < 12;
-            
-            // Convert to 12-hour format
-            const displayHour = currentHour === 0 ? 12 : currentHour > 12 ? currentHour - 12 : currentHour;
-            
-            // Set the selectors to current time
-            const hourSelect = picker.querySelector('select[name*="Hour"]');
-            const minuteSelect = picker.querySelector('select[name*="Minute"]');
-            const periodSelect = picker.querySelector('select[name*="Period"]');
-            
-            if (hourSelect) hourSelect.value = displayHour;
-            if (minuteSelect) minuteSelect.value = currentMinute.toString().padStart(2, '0');
-            if (periodSelect) periodSelect.value = isAM ? 'AM' : 'PM';
-        });
-    }
+    // Add fade out animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-20px); }
+      }
+    `;
+    document.head.appendChild(style);
 
-    /**
-     * Copies the date and time values from the previous guest to the current one.
-     * @param {HTMLElement} button - The button that was clicked to copy the dates.
-     */
-    function copyPreviousGuestDates(button) {
-        const currentGuestDiv = button.closest('.guest');
-        const currentGuestNumber = parseInt(currentGuestDiv.getAttribute('data-guest'));
-        
-        const previousGuestDiv = document.querySelector(`[data-guest="${currentGuestNumber - 1}"]`);
-        
-        if (previousGuestDiv) {
-            // Copy dates
-            const prevCheckInDate = previousGuestDiv.querySelector('[name="checkInDate"]').value;
-            const prevCheckOutDate = previousGuestDiv.querySelector('[name="checkOutDate"]').value;
-            
-            currentGuestDiv.querySelector('[name="checkInDate"]').value = prevCheckInDate;
-            currentGuestDiv.querySelector('[name="checkOutDate"]').value = prevCheckOutDate;
-            
-            // Copy times from digital selectors
-            const prevCheckInHour = previousGuestDiv.querySelector('[name="checkInHour"]').value;
-            const prevCheckInMinute = previousGuestDiv.querySelector('[name="checkInMinute"]').value;
-            const prevCheckInPeriod = previousGuestDiv.querySelector('[name="checkInPeriod"]').value;
-            const prevCheckOutHour = previousGuestDiv.querySelector('[name="checkOutHour"]').value;
-            const prevCheckOutMinute = previousGuestDiv.querySelector('[name="checkOutMinute"]').value;
-            const prevCheckOutPeriod = previousGuestDiv.querySelector('[name="checkOutPeriod"]').value;
-            
-            currentGuestDiv.querySelector('[name="checkInHour"]').value = prevCheckInHour;
-            currentGuestDiv.querySelector('[name="checkInMinute"]').value = prevCheckInMinute;
-            currentGuestDiv.querySelector('[name="checkInPeriod"]').value = prevCheckInPeriod;
-            currentGuestDiv.querySelector('[name="checkOutHour"]').value = prevCheckOutHour;
-            currentGuestDiv.querySelector('[name="checkOutMinute"]').value = prevCheckOutMinute;
-            currentGuestDiv.querySelector('[name="checkOutPeriod"]').value = prevCheckOutPeriod;
-            
-            // Update check-out minimum date
-            updateCheckOutMinDate(currentGuestDiv.querySelector('[name="checkInDate"]'));
-            
-            // Show success feedback
-            const originalButtonContent = button.innerHTML;
-            button.innerHTML = `
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Copied!
-            `;
-            button.classList.add('bg-green-50', 'text-green-600');
-            button.classList.remove('bg-blue-50', 'text-primary', 'hover:bg-blue-100');
-            
-            setTimeout(() => {
-                button.innerHTML = originalButtonContent;
-                button.classList.remove('bg-green-50', 'text-green-600');
-                button.classList.add('bg-blue-50', 'text-primary', 'hover:bg-blue-100');
-            }, 2000);
-        }
-    }
-</script>
-
-</body>
+    // Example: Uncomment and replace with your actual logo URL
+    // setLogoFromURL('https://your-domain.com/path-to-your-logo.png');
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'975ccbb696e7937f',t:'MTc1NjMxMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
